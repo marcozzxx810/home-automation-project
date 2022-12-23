@@ -14,18 +14,31 @@ import {
   Typography,
 } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import { login } from '@/api/api';
 import { setTitle } from '@/hooks/setTitle';
 import useAuth from '@/hooks/useAuth';
 
 const Login = () => {
-  setTitle('Home');
+  setTitle('Login');
 
+  const navigate = useNavigate();
   const { setUser, setInitialLoading } = useAuth();
-  const [email, setEmail] = useState<string>();
+  const [username, setUsername] = useState<string>();
   const [password, setPassword] = useState<string>();
   const signInHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log(username, password);
+    if (username && password) {
+      const { access, refresh } = await login(username, password);
+      setUser({
+        username,
+        accessToken: access,
+        refreshToken: refresh,
+      });
+      navigate('/Home');
+    }
   };
 
   return (
@@ -61,13 +74,13 @@ const Login = () => {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               // eslint-disable-next-line jsx-a11y/no-autofocus
               autoFocus
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => setUsername(event.target.value)}
             />
             <TextField
               margin="normal"
@@ -88,6 +101,11 @@ const Login = () => {
               Sign In
             </Button>
             <Grid container>
+              <Grid item xs>
+                <Link href="/forget" variant="body2">
+                  Forgot password?
+                </Link>
+              </Grid>
               <Grid item>
                 <Link href="/signup" variant="body2">
                   Sign Up

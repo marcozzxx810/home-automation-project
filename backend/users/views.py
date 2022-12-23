@@ -44,15 +44,10 @@ def add_items(request):
 
     # validating for already existing data
     if User.objects.filter(username=username).exists() or User.objects.filter(email=email).exists():
-        raise serializers.ValidationError('This data already exists')
+        raise serializers.ValidationError('Email or Username Exist')
   
     if item.is_valid():
         item.save()
         return Response(status=status.HTTP_200_OK)
     else:
         return Response(status=status.HTTP_404_NOT_FOUND)
-
-@api_view(['GET'])
-def hello(request):
-    content = {'message': 'Hello, World!'}
-    return Response(content)
