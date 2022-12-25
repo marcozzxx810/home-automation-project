@@ -38,7 +38,7 @@ def view_blood_pressure_record(request):
     elif request.method == "GET":
         # checking for the parameters from the URL
         if request.query_params:
-            bp_reocords = BloodPressureRecord.objects.filter(**request.query_param.dict())
+            bp_reocords = BloodPressureRecord.objects.filter(**request.query_params.dict())
         else:
             bp_reocords = BloodPressureRecord.objects.filter(user__id=request.user.id)
     
@@ -59,7 +59,8 @@ def view_blood_pressure_record(request):
             "systolic_pressure": request.data.get("systolic_pressure", bp_reocord.systolic_pressure),
             "diastolic_pressure": request.data.get("diastolic_pressure", bp_reocord.diastolic_pressure),
             "pulse": request.data.get("pulse", bp_reocord.pulse),
-            "user_id": bp_reocord.user_id
+            "user_id": bp_reocord.user_id,
+            "created_at": request.data.get("created_at", bp_reocord.created_at),
         }
 
         data =  BloodPressureRecordSerializer(instance=bp_reocord, data=data)

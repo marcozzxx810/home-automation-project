@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.
 class BloodPressureRecord(models.Model):
@@ -7,7 +8,7 @@ class BloodPressureRecord(models.Model):
     systolic_pressure = models.IntegerField()
     diastolic_pressure = models.IntegerField()
     pulse = models.IntegerField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
     updated_at = models.DateTimeField(auto_now=True)
   
     def __str__(self) -> str:

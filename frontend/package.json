@@ -16,12 +16,18 @@
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
     "@mui/material": "^5.11.1",
+    "@mui/x-date-pickers": "^6.0.0-alpha.13",
+    "@mui/x-date-pickers-pro": "^5.0.12",
     "axios": "^1.2.1",
+    "dayjs": "^1.11.7",
+    "mui-datatables": "^4.2.2",
+    "mui-modal-provider": "^2.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.5.0"
   },
   "devDependencies": {
+    "@types/mui-datatables": "^3.7.9",
     "@types/node": "^18.11.17",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",

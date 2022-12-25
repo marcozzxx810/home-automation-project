@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 
 const instance: AxiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
@@ -8,14 +8,71 @@ const instance: AxiosInstance = axios.create({
   },
 });
 
+// set access token
 instance.interceptors.request.use(
-  (config) => config,
-  (error) => Promise.reject(error),
+  (config) => {
+    const accessToken = JSON.parse(localStorage.getItem('accessToken') || '{}');
+    if (accessToken && config.headers) {
+      config.headers['Authorization'] = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  },
 );
 
+// refresh token api
+
+function refreshToken() {
+  const refreshToken = JSON.parse(localStorage.getItem('refreshToken') || 'null');
+
+  if (refreshToken) {
+    return instance.post('/auth/token/refresh/', {
+      refresh: refreshToken,
+    });
+  }
+
+  throw new Error('No refresh Token in local storage');
+}
+
+// refresh access token
+
 instance.interceptors.response.use(
-  (config) => config,
-  (error) => Promise.reject(error),
+  (res) => {
+    return res;
+  },
+  async (err) => {
+    const originalConfig = err.config;
+
+    if (err.response) {
+      // Access Token was expired
+      if (err.response.status === 401 && !originalConfig._retry) {
+        originalConfig._retry = true;
+
+        try {
+          const res = await refreshToken();
+          const { accessToken } = res.data;
+          localStorage.setItem('accessToken', JSON.stringify(accessToken));
+          instance.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
+          return instance(originalConfig);
+        } catch (_error: any) {
+          if (_error.response && _error.response.data) {
+            return Promise.reject(_error.response.data);
+          }
+
+          return Promise.reject(_error);
+        }
+      }
+
+      if (err.response.status === 403 && err.response.data) {
+        return Promise.reject(err.response.data);
+      }
+    }
+
+    return Promise.reject(err);
+  },
 );
 
 export const apis = (instance: AxiosInstance) => {

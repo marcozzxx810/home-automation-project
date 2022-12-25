@@ -7,6 +7,9 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import ModalProvider from 'mui-modal-provider';
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -42,16 +45,20 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <SnackbarProvider>
-        <BrowserRouter>
-          <AuthProvider>
-            <Paper sx={{ height: '100', width: '100vw', minHeight: '100vh' }}>
-              <Navbar />
-              <Router />
-            </Paper>
-          </AuthProvider>
-        </BrowserRouter>
-      </SnackbarProvider>
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <ModalProvider>
+          <SnackbarProvider>
+            <BrowserRouter>
+              <AuthProvider>
+                <Paper sx={{ height: '100', width: '100vw', minHeight: '100vh' }}>
+                  <Navbar />
+                  <Router />
+                </Paper>
+              </AuthProvider>
+            </BrowserRouter>
+          </SnackbarProvider>
+        </ModalProvider>
+      </LocalizationProvider>
     </ThemeProvider>
   );
 }

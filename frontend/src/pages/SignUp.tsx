@@ -27,8 +27,6 @@ const SignUp = () => {
   const signUpHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (username && email && password && confirmPassword && isStaff && passcode) {
-      console.log(username, email, password, confirmPassword, isStaff, passcode);
-
       if (password != confirmPassword) {
         showMessage({
           message: `Password and confirm passowrd not match`,
@@ -39,7 +37,6 @@ const SignUp = () => {
       }
 
       const res = await register(email, username, passcode, isStaff, passcode);
-      console.log('hi');
       if (res.status === 200) {
         showMessage({ message: `${username} successfully created`, severity: 'success' });
       } else {

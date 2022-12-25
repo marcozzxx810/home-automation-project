@@ -37,12 +37,27 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
   const location = useLocation();
 
   useEffect(() => {
-    // bypass Login
-    setUser({
-      username: 'hi',
-    });
+    const username = JSON.parse(localStorage.getItem('username') || 'null');
+    const accessToken = JSON.parse(localStorage.getItem('accessToken') || 'null');
+    const refreshToken = JSON.parse(localStorage.getItem('refreshToken') || 'null');
+    console.log(accessToken);
+    if (username && accessToken && refreshToken) {
+      setUser({
+        username,
+        accessToken,
+        refreshToken,
+      });
+    }
     setInitialLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (user?.username && user?.accessToken && user?.refreshToken) {
+      localStorage.setItem('username', JSON.stringify(user.username));
+      localStorage.setItem('accessToken', JSON.stringify(user.accessToken));
+      localStorage.setItem('refreshToken', JSON.stringify(user.refreshToken));
+    }
+  }, [user]);
 
   const memoedValue = useMemo(
     () => ({
