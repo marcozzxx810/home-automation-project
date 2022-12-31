@@ -20,7 +20,7 @@ DIGITS_LOOKUP = {
 }
 
 def main():
-    img_name = "test2.jpeg"
+    img_name = "testdata/test2.jpeg"
     image = cv2.imread(img_name)
     image = imutils.resize(image, height=1000)
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -90,6 +90,8 @@ def main():
             digitCnts.append(c)
 
     cv2.imshow("Thresh", output)
+    cv2.imwrite("thresh.png", thresh)
+    cv2.imwrite("extracted.png", output)
     cv2.waitKey(0)
     print(len(digitCnts))
 
@@ -113,6 +115,15 @@ def main():
         (roiH, roiW) = roi.shape
         if roiW / roiH < 0.3:
             digits.append(1)
+            cv2.putText(
+                output,
+                str(1),
+                (x - 10, y - 10),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                0.65,
+                (0, 255, 0),
+                2,
+            )
             continue
         print(roiH, roiW)
         (dW, dH) = (int(roiW * 0.25), int(roiH * 0.15))
@@ -181,6 +192,7 @@ def main():
     print("ans", ans)
 
     cv2.imshow("Thresh", output)
+    cv2.imwrite("output.png", output)
     cv2.waitKey(0)
 
 

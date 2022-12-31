@@ -29,7 +29,6 @@ const Login = () => {
   const [password, setPassword] = useState<string>();
   const signInHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(username, password);
     if (username && password) {
       const { access, refresh } = await login(username, password);
       setUser({
