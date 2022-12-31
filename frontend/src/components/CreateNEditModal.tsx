@@ -6,6 +6,8 @@ import {
   DialogContentText,
   DialogProps,
   DialogTitle,
+  Grid,
+  IconButton,
   Typography,
 } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -25,6 +27,7 @@ import {
   createBloodPressureRecord,
   getBloodPressureRecordById,
   updateBloodPressureRecord,
+  uploadImageBloodPressureRecord,
 } from '@/api/api';
 import useSnackbar, { SnackbarProvider } from '@/hooks/useSnackbar';
 
@@ -109,6 +112,22 @@ const CreateNEditModal: React.FC<CreateNEditModalProps> = ({
 
   const { showModal } = useModal();
 
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) {
+      return;
+    }
+    const file = e.target.files[0];
+    const res = await uploadImageBloodPressureRecord(file);
+    const {
+      systolic_pressure: prefilledSystolicPressure,
+      diastolic_pressure: prefilledDiastolicPressure,
+      pulse: prefilledPulse,
+    } = res.data;
+    if (prefilledSystolicPressure) setSystolicPressure(prefilledSystolicPressure);
+    if (prefilledDiastolicPressure) setDiastolicPressure(prefilledDiastolicPressure);
+    if (prefilledPulse) setPulse(prefilledPulse);
+  };
+
   const submitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (recordDateTime && systolicPressure && diastolicPressure && pulse) {
@@ -171,9 +190,25 @@ const CreateNEditModal: React.FC<CreateNEditModalProps> = ({
     <Modal {...props}>
       <SnackbarProvider>
         <Box component="form" onSubmit={submitHandler} sx={style}>
-          <Typography component="h1" variant="h5" sx={{ mb: '5%' }}>
-            Blood Pressure
-          </Typography>
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            spacing={2}
+            sx={{ mb: '5%' }}
+          >
+            <Grid item>
+              <Typography component="h1" variant="h5">
+                Blood Pressure
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Button variant="contained" component="label">
+                Upload
+                <input hidden accept="image/*" type="file" onChange={handleFileUpload} />
+              </Button>
+            </Grid>
+          </Grid>
           <DateTimePicker
             sx={{ m: '5%' }}
             label="Record date and time"

@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from bloodPressure.prefilling import convertImage2BloodPressureRecord
 from bloodPressure.models import BloodPressureRecord
 from bloodPressure.serializers import BloodPressureRecordSerializer
 from rest_framework.response import Response
@@ -6,6 +7,9 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from django.shortcuts import get_object_or_404
+from django.core.files.base import ContentFile
+import tempfile
+import cv2
 
 """
 {
@@ -15,6 +19,25 @@ from django.shortcuts import get_object_or_404
 }
 
 """
+
+@api_view(['POST'])
+def prefilling_blood_pressure(request):
+    if request.method == "POST":
+        image = request.FILES.get("image", None)
+        if image is not None:
+			# grab the uploaded image
+            extension = image.name.split('.')[-1]
+            if extension not in ['jpeg', 'jpg', 'png']:
+                return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            with tempfile.NamedTemporaryFile() as tfile:
+                try:
+                    tfile.write(image.read())
+                    image = cv2.imread(tfile.name)
+                    result = convertImage2BloodPressureRecord(image)
+                except Exception:
+                    return Response(status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+        return Response(status=status.HTTP_200_OK, data=result)
 
 # Create your views here.
 @api_view(['POST', 'GET', 'PUT', 'DELETE'])

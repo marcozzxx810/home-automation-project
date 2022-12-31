@@ -121,3 +121,17 @@ export const updateBloodPressureRecord = async (
     return error.response;
   }
 };
+
+export const uploadImageBloodPressureRecord = async (file: File) => {
+  try {
+    const res = await api.post(
+      '/api/bloodPressure/prefilling/',
+      { image: file },
+      { headers: { 'Content-Type': 'multipart/form-data' } },
+    );
+    return res;
+  } catch (error: any) {
+    console.log(error);
+    return error.response;
+  }
+};
