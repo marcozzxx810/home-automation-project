@@ -40,7 +40,6 @@ export function AuthProvider({ children }: { children: ReactNode }): JSX.Element
     const username = JSON.parse(localStorage.getItem('username') || 'null');
     const accessToken = JSON.parse(localStorage.getItem('accessToken') || 'null');
     const refreshToken = JSON.parse(localStorage.getItem('refreshToken') || 'null');
-    console.log(accessToken);
     if (username && accessToken && refreshToken) {
       setUser({
         username,
