@@ -44,6 +44,8 @@ python manage.py migrate
 # create a django super admin
 python manage.py createsuperuser --email admin@example.com --username root
 
+# update the .env in setting folder
+
 # start the server
 python manage.py runserver
 ```
@@ -56,6 +58,9 @@ cd frontend
 
 # install dependencies
 yarn
+
+# update the .env
+cp .env.example .env
 
 # start frontend
 yarn run dev
