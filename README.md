@@ -69,4 +69,4 @@ yarn run dev
 *This require two terminal to run the stack*
 
 # Demo
-[<img src="https://img.youtube.com/vi/YQElsDTjbx8/maxresdefault.jpg" width="50%">](https://youtu.be/YQElsDTjbx8)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/YQElsDTjbx8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
