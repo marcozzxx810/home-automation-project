@@ -65,12 +65,10 @@ def view_blood_pressure_record(request):
         else:
             bp_reocords = BloodPressureRecord.objects.filter(user__id=request.user.id)
     
-        # if there is something in items else raise error
-        if bp_reocords:
-            data = BloodPressureRecordSerializer(bp_reocords, many=True)
-            return Response(data.data)
-        else:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        
+        data = BloodPressureRecordSerializer(bp_reocords, many=True)
+        return Response(data.data)
+
     elif request.method == "PUT":
         pk = request.data["id"]
         bp_reocord = BloodPressureRecord.objects.get(pk=pk)

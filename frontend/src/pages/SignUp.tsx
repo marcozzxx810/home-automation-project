@@ -36,7 +36,7 @@ const SignUp = () => {
         return;
       }
 
-      const res = await register(email, username, passcode, isStaff, passcode);
+      const res = await register(email, username, password, isStaff, passcode);
       if (res.status === 200) {
         showMessage({ message: `${username} successfully created`, severity: 'success' });
       } else {

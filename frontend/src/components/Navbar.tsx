@@ -38,7 +38,7 @@ export const Navbar: React.FC = () => {
 
   const handleLogOut = () => {
     localStorage.clear();
-    navigate('/login`');
+    navigate('/login');
     setAnchorEl(null);
   };
 

@@ -1,4 +1,3 @@
-
 from imutils.perspective import four_point_transform
 import cv2
 import imutils
@@ -58,7 +57,7 @@ def filterShadow(image):
 
     # sharpen using unsharp masking
     sharped = filters.unsharp_mask(
-        division, radius=1.5, amount=1.5, channel_axis=False, preserve_range=False
+        division, radius=1.5, amount=1.5, multichannel=False, preserve_range=False
     )
     sharped = (255 * sharped).clip(0, 255).astype(np.uint8)
 
@@ -206,4 +205,4 @@ def convertImage2BloodPressureRecord(image):
     digits = convertContours2Digits(digit_contours, gray_display)
     # Group digits by K mean result
     result = convertDigitsToBloodPressureRecord(digits, labels, centers)
-    return result 
+    return result
