@@ -1,6 +1,6 @@
 # home-automation-project
 
-A home portal that support blood pressure logging
+A home portal that support user authentication, blood pressure logging
 
 ## Description
 
